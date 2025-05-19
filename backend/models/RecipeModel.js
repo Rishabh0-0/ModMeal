@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 //////////////////////////////////////////////////////////////
 /////////////////////// Ingredient Schema
-const ingredientSchema = new mongoose.schema({
+const ingredientSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -18,7 +18,7 @@ const ingredientSchema = new mongoose.schema({
 
 //////////////////////////////////////////////////////////////
 /////////////////////// Recipe Schema
-const recipeSchema = new mongoose.schema(
+const recipeSchema = new mongoose.Schema(
   {
     name: {
       type: String,
@@ -53,6 +53,7 @@ const recipeSchema = new mongoose.schema(
     ],
     tips: String,
   },
+  // OPT
   {
     toJSON: { virutals: true },
   }

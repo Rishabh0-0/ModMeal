@@ -1,6 +1,7 @@
-const express = require("express");
+const express = require('express');
 const app = express();
-const cors = require("cors");
+const cors = require('cors');
+const recipeRouter = require('./routes/recipeRoutes');
 
 ////////////////////////////////////////////////////
 /////////////////// MIDDLEWARES
@@ -9,9 +10,10 @@ app.use(express.json());
 
 ////////////////////////////////////////////////////
 /////////////////// ROUTES
+app.use('/api/v1/recipes', recipeRouter);
 
-app.get("/", (req, res) => {
-  res.send("ModMeals api is running...");
+app.get('/', (req, res) => {
+  res.send('ModMeals api is running...');
 });
 
 module.exports = app;
