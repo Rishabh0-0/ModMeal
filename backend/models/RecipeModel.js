@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 //////////////////////////////////////////////////////////////
 /////////////////////// Ingredient Schema
@@ -56,16 +56,17 @@ const recipeSchema = new mongoose.Schema(
   // OPT
   {
     toJSON: { virutals: true },
+    toObject: { virtuals: true },
   }
 );
 
 //////////////////////////////////////////////////////////////
 /////////////////////// Virtuals
-recipeSchema.virtual("totalTime").get(function () {
+recipeSchema.virtual('totalTime').get(function () {
   return this.prepTime + this.cookTime;
 });
 
 //////////////////////////////////////////////////////////////
 
-const Recipe = mongoose.model("Recipe", recipeSchema);
+const Recipe = mongoose.model('Recipe', recipeSchema);
 module.exports = Recipe;
