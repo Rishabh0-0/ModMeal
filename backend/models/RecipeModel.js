@@ -22,16 +22,16 @@ const recipeSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: true,
+      required: [true, 'A recipe must have a name'],
     },
     description: String,
     prepTime: {
       type: Number,
-      required: true,
+      required: [true, 'A recipe must have a prep-time'],
     },
     cookTime: {
       type: Number,
-      required: true,
+      required: [true, 'A recipe must have a cook-time'],
     },
     recipeYield: String,
     recipeCategory: String,
@@ -55,7 +55,7 @@ const recipeSchema = new mongoose.Schema(
   },
   // OPT
   {
-    toJSON: { virutals: true },
+    toJSON: { virtuals: true },
     toObject: { virtuals: true },
   }
 );

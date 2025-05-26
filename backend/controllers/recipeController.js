@@ -1,5 +1,6 @@
 const Recipe = require('../models/recipeModel');
 const catchAsync = require('../utils/catchAsync');
+const AppError = require('./../utils/AppError');
 
 //////////////////////////////////////////////////////////////
 /////////////////////// GET ALL RECIPES
@@ -20,11 +21,7 @@ exports.getRecipe = catchAsync(async (req, res, next) => {
   const recipe = await Recipe.findById(recipeId);
 
   if (!recipe) {
-    console.log('running..');
-    const err = new Error('Recipe not found!');
-    err.statusCode = 404;
-    err.status = 'fail';
-    return next(err);
+    return next(new AppError('Recipe not found!', 404));
   }
 
   res.json({
@@ -53,8 +50,7 @@ exports.updateRecipe = catchAsync(async (req, res, next) => {
   });
 
   if (!recipe) {
-    const err = new Error('Recipe not found!');
-    return next(err);
+    return next(new AppError('Recipe not found!', 404));
   }
 
   res.json({
@@ -69,8 +65,7 @@ exports.deleteRecipe = catchAsync(async (req, res, next) => {
   const deletedRecipe = await Recipe.findByIdAndDelete(req.params.id);
 
   if (!deletedRecipe) {
-    const err = new Error('Recipe not found!');
-    return next(err);
+    return next(new AppError('Recipe not found!', 404));
   }
 
   res.status(204).json({

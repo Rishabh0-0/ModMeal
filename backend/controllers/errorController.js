@@ -1,13 +1,23 @@
-// TODO: ADD DIFFERENT ERROR FOR OPERATIONAL ERRORS
-
 //////////////////////////////////////////////////////////////
+
+const AppError = require('../utils/AppError');
+
 /////////////////////// PRODUCTION ERROR MESSAGE
 const errorProd = (err, res) => {
-  console.log(err);
-  res.status(err.statusCode).json({
-    status: err.status,
-    message: 'Something went wrong!',
-  });
+  // OPERATIONAL ERRORS
+  if (err.isOperational === true) {
+    res.status(err.statusCode).json({
+      status: err.status,
+      message: err.message,
+    });
+
+    // UNKNOWN/PROGRAMMING ERRORS
+  } else {
+    res.status(err.statusCode).json({
+      status: 'error',
+      message: 'Something went wrong!',
+    });
+  }
 };
 
 //////////////////////////////////////////////////////////////
@@ -23,6 +33,14 @@ const errorDev = (err, res) => {
 };
 
 //////////////////////////////////////////////////////////////
+const handleValidationErrorDB = (err) => {
+  const errors = Object.values(err.errors).map((el) => el.message);
+  const message = `Invalid input data: ${errors.join('. ')}`;
+
+  return new AppError(message, 400);
+};
+
+//////////////////////////////////////////////////////////////
 /////////////////////// ERROR HANDLING MIDDLEWARE
 
 module.exports = (err, req, res, next) => {
@@ -32,6 +50,10 @@ module.exports = (err, req, res, next) => {
   if (process.env.NODE_ENV == 'development') {
     errorDev(err, res);
   } else if (process.env.NODE_ENV == 'production') {
-    errorProd(err, res);
+    const error =
+      err.name === 'ValidationError'
+        ? handleValidationErrorDB(err, res)
+        : { ...err };
+    errorProd(error, res);
   }
 };

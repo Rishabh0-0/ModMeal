@@ -13,10 +13,8 @@ app.use(express.json());
 /////////////////// ROUTES
 app.use('/api/v1/recipes', recipeRouter);
 
-app.get('/', (req, res) => {
-  res.send('ModMeals api is running...');
-});
-
+////////////////////////////////////////////////////
+/////////////////// ERROR HANDLING MIDDLEWARES
 app.use(globalErrorHandler);
 
 module.exports = app;
