@@ -1,11 +1,11 @@
-const Recipe = require('../models/recipeModel');
+const Recipe = require('../models/RecipeModel');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('./../utils/AppError');
 
 //////////////////////////////////////////////////////////////
 /////////////////////// GET ALL RECIPES
 exports.getAllRecipes = catchAsync(async (req, res, next) => {
-  const recipes = await Recipe.find({});
+  const recipes = await Recipe.find().populate('recipeIngredients');
 
   res.json({
     success: true,

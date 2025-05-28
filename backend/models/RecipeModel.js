@@ -1,20 +1,5 @@
 const mongoose = require('mongoose');
-
-//////////////////////////////////////////////////////////////
-/////////////////////// Ingredient Schema
-const ingredientSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-  },
-  quantity: Number,
-  unit: String,
-  prepration: String,
-  optional: {
-    type: Boolean,
-    default: false,
-  },
-});
+const Ingredient = require('./IngredientModel');
 
 //////////////////////////////////////////////////////////////
 /////////////////////// Recipe Schema
@@ -44,7 +29,12 @@ const recipeSchema = new mongoose.Schema(
       proteinContent: String,
       carbohydrateContent: String,
     },
-    recipeIngredients: [ingredientSchema], // Array of Ingredents
+    recipeIngredients: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Ingredient',
+      },
+    ], // Array of Ingredents
     recipeInstruction: [
       {
         step: Number,
