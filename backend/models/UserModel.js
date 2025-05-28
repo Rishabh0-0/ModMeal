@@ -1,5 +1,8 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
+const catchAsync = require('../utils/catchAsync');
+const AppError = require('../utils/AppError');
+const Ingredient = require('./IngredientModel');
 
 //////////////////////////////////////////////////////////////
 // Embedded Schema for Available Ingredients within User
@@ -55,6 +58,31 @@ const userSchema = mongoose.Schema(
   {
     timestamps: true,
   }
+);
+
+//////////////////////////////////////////////////////////////
+//Pre-save hook to denormalize ingredient names in user's available ingredients
+userSchema.pre(
+  'save',
+  catchAsync(async function (next) {
+    if (this.isModified('available_ingredients') || this.isNew) {
+      for (const item of this.available_ingredients) {
+        if (item.ingredient && !item.name_denormalized) {
+          const ingredientDoc = await Ingredient.findById(item.ingredient);
+          if (!ingredientDoc) {
+            return next(
+              new AppError(
+                'Error fetching ingredient for user denormalization.',
+                404
+              )
+            );
+          }
+          name_denormalized = ingredientDoc.name;
+        }
+      }
+    }
+    next();
+  })
 );
 
 const User = mongoose.model('User', userSchema);

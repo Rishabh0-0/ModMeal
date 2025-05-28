@@ -17,6 +17,7 @@ const ingredientSchema = new mongoose.Schema({
   category: {
     type: String,
     trim: true,
+    default: 'Misc',
   },
 });
 

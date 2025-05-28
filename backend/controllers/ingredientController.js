@@ -11,3 +11,13 @@ exports.getAllIngredients = catchAsync(async (req, res, next) => {
     data: ingredients,
   });
 });
+
+exports.getAllCategories = catchAsync(async (req, res, next) => {
+  const categories = await Ingredient.distinct('category');
+
+  res.json({
+    success: true,
+    results: categories.length,
+    data: categories,
+  });
+});

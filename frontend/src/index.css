@@ -1,9 +1,1 @@
 @import "tailwindcss";
-
-@theme {
-  --color-blush-pink: #FFDCDC;
-  --color-peach: #FFD6BA;
-  --color-light-peach: #FFE8CD;
-  --color-soft-peach: #FFDCC0;
-  --color-medium-peach: #E6BDA3;
-}
