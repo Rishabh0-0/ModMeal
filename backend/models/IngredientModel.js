@@ -5,14 +5,18 @@ const mongoose = require('mongoose');
 const ingredientSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true,
+    required: [true, 'Ingredient name is required'],
+    unique: true,
+    trim: true,
+    index: true,
   },
-  quantity: Number,
-  unit: String,
-  preparation: String,
-  optional: {
-    type: Boolean,
-    default: false,
+  unit: {
+    type: String,
+    trim: true,
+  },
+  category: {
+    type: String,
+    trim: true,
   },
 });
 
