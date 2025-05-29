@@ -2,8 +2,15 @@ const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/AppError');
 const Ingredient = require('../models/IngredientModel');
 
-exports.getAllIngredients = catchAsync(async (req, res, next) => {
-  const ingredients = await Ingredient.find();
+exports.getIngredients = catchAsync(async (req, res, next) => {
+  const { category } = req.query;
+  const filter = {};
+
+  if (category) {
+    filter.category = category;
+  }
+
+  const ingredients = await Ingredient.find(filter).sort({ name: 1 });
 
   res.json({
     success: true,
@@ -12,7 +19,7 @@ exports.getAllIngredients = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.getAllCategories = catchAsync(async (req, res, next) => {
+exports.getIngredientCategories = catchAsync(async (req, res, next) => {
   const categories = await Ingredient.distinct('category');
 
   res.json({

@@ -3,7 +3,7 @@ const router = express.Router();
 
 const ingredientController = require('../controllers/ingredientController');
 
-router.route('/categories').get(ingredientController.getAllCategories);
-router.route('/').get(ingredientController.getAllIngredients);
+router.route('/').get(ingredientController.getIngredients);
+router.route('/categories').get(ingredientController.getIngredientCategories);
 
 module.exports = router;
