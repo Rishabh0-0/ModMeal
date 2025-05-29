@@ -1,16 +1,20 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import IngredientsList from "./IngredientsList";
+import useApi from "../utils/useApi";
 
 const IngredientsCategorized = () => {
-  const [categories, setCategories] = useState([]);
+  const {
+    data: categories,
+    loading,
+    error,
+  } = useApi("http://localhost:3000/api/v1/ingredients/categories", []);
 
-  useEffect(() => {
-    axios
-      .get("http://localhost:3000/api/v1/ingredients/categories")
-      .then((res) => setCategories(res.data.data))
-      .catch((err) => console.error(err));
-  }, []);
+  if (loading) return <p>Categories are loading...</p>;
+  if (error) return <p className="text-red-500">{error}</p>;
+  if (categories.length === 0) {
+    return <p>No category defined.</p>;
+  }
 
   return (
     <ul>

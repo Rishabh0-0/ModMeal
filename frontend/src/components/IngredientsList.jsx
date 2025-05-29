@@ -1,16 +1,21 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
 import IngredientCard from "./IngredientCard";
+import useApi from "../utils/useApi";
 
 const IngredientsList = ({ category }) => {
-  const [ingredients, setIngredients] = useState([]);
+  const {
+    data: ingredients,
+    loading,
+    error,
+  } = useApi(
+    `http://localhost:3000/api/v1/ingredients?category=${category}`,
+    []
+  );
 
-  useEffect(() => {
-    axios
-      .get(`http://localhost:3000/api/v1/ingredients?category=${category}`)
-      .then((res) => setIngredients(res.data.data))
-      .catch((err) => console.error(err));
-  }, [category]);
+  if (loading) return <p>Loading Ingredients...</p>;
+  if (error) return <p className="text-red-500">{error}</p>;
+  if (ingredients.length === 0) {
+    return <p>No ingredients found for this category.</p>;
+  }
 
   return (
     <ul className="flex flex-col gap-2">
