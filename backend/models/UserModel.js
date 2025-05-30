@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
-const catchAsync = require('../utils/catchAsync');
+const bcrypt = require('bcrypt');
 const AppError = require('../utils/AppError');
 const Ingredient = require('./IngredientModel');
 
@@ -49,7 +49,7 @@ const userSchema = mongoose.Schema(
       unique: true,
       validate: [validator.isEmail, 'Please enter a valid email address'],
     },
-    password_hash: {
+    password: {
       type: String,
       required: [true, 'Password is required.'],
     },
@@ -62,28 +62,37 @@ const userSchema = mongoose.Schema(
 
 //////////////////////////////////////////////////////////////
 //Pre-save hook to denormalize ingredient names in user's available ingredients
-userSchema.pre(
-  'save',
-  catchAsync(async function (next) {
-    if (this.isModified('available_ingredients') || this.isNew) {
-      for (const item of this.available_ingredients) {
-        if (item.ingredient && !item.name_denormalized) {
-          const ingredientDoc = await Ingredient.findById(item.ingredient);
-          if (!ingredientDoc) {
-            return next(
-              new AppError(
-                'Error fetching ingredient for user denormalization.',
-                404
-              )
-            );
-          }
-          name_denormalized = ingredientDoc.name;
+userSchema.pre('save', async function (next) {
+  if (this.isModified('available_ingredients') || this.isNew) {
+    for (const item of this.available_ingredients) {
+      if (item.ingredient && !item.name_denormalized) {
+        const ingredientDoc = await Ingredient.findById(item.ingredient);
+        if (!ingredientDoc) {
+          throw new AppError(
+            'Error fetching ingredient for user denormalization.',
+            404
+          );
         }
+        item.name_denormalized = ingredientDoc.name;
       }
     }
+  }
+  next();
+});
+
+//////////////////////////////////////////////////////////////
+///// Pre-save hook to hash the password
+userSchema.pre('save', async function (next) {
+  if (!this.isModified('password')) return next();
+
+  try {
+    const salt = await bcrypt.genSalt(12);
+    this.password = await bcrypt.hash(this.password, salt);
     next();
-  })
-);
+  } catch (err) {
+    next(err);
+  }
+});
 
 const User = mongoose.model('User', userSchema);
 

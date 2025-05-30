@@ -93,25 +93,23 @@ recipeSchema.virtual('totalTime').get(function () {
 
 //////////////////////////////////////////////////////////////
 //Pre-save hook to denormalize ingredient names in recipes
-recipeSchema.pre(
-  'save',
-  catchAsync(async function (next) {
-    if (this.isModified('ingredients_required') || this.isNew) {
-      for (const item of this.ingredients_required) {
-        if (item.ingredient && !item.name_denormalized) {
-          const ingredientDoc = await Ingredient.findById(item.ingredient);
-          if (!ingredientDoc) {
-            return next(
-              new AppError('Error fetching ingredient for normalization', 404)
-            );
-          }
-          name_denormalized = ingredientDoc.name;
+recipeSchema.pre('save', async function (next) {
+  if (this.isModified('ingredients_required') || this.isNew) {
+    for (const item of this.ingredients_required) {
+      if (item.ingredient && !item.name_denormalized) {
+        const ingredientDoc = await Ingredient.findById(item.ingredient);
+        if (!ingredientDoc) {
+          throw new AppError(
+            'Error fetching ingredient for normalization',
+            404
+          );
         }
+        item.name_denormalized = ingredientDoc.name;
       }
     }
-    next();
-  })
-);
+  }
+  next();
+});
 
 //////////////////////////////////////////////////////////////
 
