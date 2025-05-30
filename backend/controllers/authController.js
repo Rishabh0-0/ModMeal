@@ -9,6 +9,8 @@ const signToken = (id) => {
   });
 };
 
+//////////////////////////////////////////////////////////////
+/////////////////////// REGISTER A NEW USER
 exports.register = catchAsync(async (req, res, next) => {
   const { username, password, email } = req.body;
 
@@ -40,5 +42,38 @@ exports.register = catchAsync(async (req, res, next) => {
     message: 'User registered successfully',
     token,
     user: { id: user._id, username: user.username, email: user.email },
+  });
+});
+
+//////////////////////////////////////////////////////////////
+/////////////////////// LOGIN A USER
+exports.login = catchAsync(async (req, res, next) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return next(new AppError('Email and password are required', 400));
+  }
+
+  const user = await User.findOne({ email });
+  if (!user) {
+    return next(new AppError('Invalid credentials', 401));
+  }
+
+  const isMatch = await user.comparePassword(password);
+  if (!isMatch) {
+    return next(new AppError('Invalid credentials', 401));
+  }
+
+  const token = signToken(user._id);
+
+  res.json({
+    success: true,
+    message: 'Login successful',
+    token,
+    user: {
+      id: user._id,
+      username: user.username,
+      email: user.email,
+    },
   });
 });
