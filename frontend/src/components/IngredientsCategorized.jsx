@@ -1,5 +1,3 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
 import IngredientsList from "./IngredientsList";
 import useApi from "../utils/useApi";
 
