@@ -1,13 +1,13 @@
 import React from "react";
 
 const AddBtn = ({ onClick, className }) => {
-  const classes = `${className} bg-emerald-500 active:bg-emerald-600 rounded-r-xl min-w-9 h-full flex justify-center items-center transition-all duration-300 active:shadow-sm active:translate-y-[-2px] hover:shadow-md hover:translate-y-[-5px] transform cursor-pointer`;
+  const classes = `${className} bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 rounded-r-xl min-w-9 h-full flex justify-center items-center transition-all duration-300 active:shadow-sm active:translate-y-[-2px] hover:shadow-md hover:translate-y-[-5px] transform cursor-pointer`;
 
   return (
     <button onClick={onClick} className={classes}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        className="h-5 w-5 sm:h-6 sm:w-6 md:h-7 md:w-7"
+        className="h-5 w-5 sm:h-6 sm:w-6 md:h-7 md:w-7 text-white"
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"

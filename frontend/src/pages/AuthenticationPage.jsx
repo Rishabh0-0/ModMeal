@@ -1,11 +1,9 @@
-import React from "react";
-import Login from "../components/AuthComponents/Login";
+import DashBoard from "../components/AuthComponents/DashBoard";
 
 const AuthenticationPage = () => {
   return (
     <div>
-      <h1>AuthenticationPage</h1>
-      <Login />
+      <DashBoard />
     </div>
   );
 };

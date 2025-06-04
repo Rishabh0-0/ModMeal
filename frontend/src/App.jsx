@@ -1,4 +1,3 @@
-import IngredientsCategorized from "./components/IngredientsCategorized";
 import AuthenticationPage from "./pages/AuthenticationPage";
 
 const App = () => {

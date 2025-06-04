@@ -1,8 +1,7 @@
 import IngredientCard from "./IngredientCard";
-import useApi from "../utils/useApi";
+import useApi from "../../utils/useApi";
 
 const IngredientsList = ({ category }) => {
-
   const {
     data: ingredients,
     loading,
