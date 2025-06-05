@@ -1,9 +1,9 @@
-import AuthenticationPage from "./pages/AuthenticationPage";
+import DashBoard from "./components/AuthComponents/DashBoard";
 
 const App = () => {
   return (
     <div className="p-4">
-      <AuthenticationPage />
+      <DashBoard />
     </div>
   );
 };

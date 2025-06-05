@@ -53,7 +53,7 @@ const AuthProvider = ({ children }) => {
       });
       localStorage.setItem("token", res.data.token);
       setToken(res.data.token);
-      setUser(res.data.user); 
+      setUser(res.data.user);
       return {
         success: true,
         message: res.data.message || "Login successful",
@@ -96,10 +96,22 @@ const AuthProvider = ({ children }) => {
   };
 
   // Logout function
-  const logout = () => {
-    localStorage.removeItem("token");
-    setToken(null);
-    setUser(null);
+  const logout = async () => {
+    try {
+      const res = await apiClient.post("/users/logout");
+      localStorage.removeItem("token");
+      setToken(null);
+      setUser(null);
+      return {
+        success: true,
+        message: res.data.message || "Logout successful",
+      };
+    } catch (err) {
+      return {
+        success: false,
+        message: err.response?.data?.message || err.message || "Logout failed!",
+      };
+    }
   };
 
   // Protected API call helper
