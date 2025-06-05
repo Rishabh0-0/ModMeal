@@ -77,3 +77,9 @@ exports.login = catchAsync(async (req, res, next) => {
     },
   });
 });
+
+//////////////////////////////////////////////////////////////
+/////////////////////// LOGOUT
+exports.logout = catchAsync(async (req, res, next) => {
+  res.json({ message: 'Logout successful' });
+});

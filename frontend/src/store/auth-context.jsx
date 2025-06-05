@@ -53,7 +53,7 @@ const AuthProvider = ({ children }) => {
       });
       localStorage.setItem("token", res.data.token);
       setToken(res.data.token);
-      setUser(res.data.user); // Assuming your API returns { token: "...", user: { ... } }
+      setUser(res.data.user); 
       return {
         success: true,
         message: res.data.message || "Login successful",

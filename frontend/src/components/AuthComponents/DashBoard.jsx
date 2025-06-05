@@ -4,9 +4,9 @@ import Register from "./Register";
 import SwitchBtn from "../../../UI/SwitchBtn";
 
 const DashBoard = () => {
-  const [authMode, setAuthMode] = useState("signin");
+  const [authMode, setAuthMode] = useState("login");
   const authOptions = [
-    { label: "Sign In", value: "signin" },
+    { label: "Login", value: "login" },
     { label: "Register", value: "register" },
   ];
 
@@ -25,7 +25,7 @@ const DashBoard = () => {
         currentValue={authMode}
         onChange={authChangeHandler}
       />
-      {authMode === "signin" && <Login />}
+      {authMode === "login" && <Login />}
       {authMode === "register" && <Register />}
     </div>
   );
